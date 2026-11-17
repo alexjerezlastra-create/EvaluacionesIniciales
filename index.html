@@ -103,7 +103,8 @@ function saveToGoogleDrive(){
 
 function exportDB(){save();download(db,'sistema_evaluacion_V26.json')}fileDB.onchange=e=>{const f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.courses||!x.students||!x.evaluations)throw Error();db=x;migrate();db.classes.forEach(ensureRoomProfessionals);db.evaluations.forEach(ev=>ev.data=normalizeEvaluationData(ev.data));if(!byId(db.courses,db.selected.courseId)&&db.courses[0])db.selected.courseId=db.courses[0].id;render()}catch{alert('Archivo JSON no válido')}};r.readAsText(f);e.target.value=''};
 
-/* --- GOOGLE DRIVE API INTEGRATION --- */
+
+/* --- GOOGLE DRIVE API INTEGRATION (BIDIRECCIONAL) --- */
 const CLIENT_ID = '503984601918-tv238rrh2fksfrlfi8cjsj5edqjqeud3.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 let tokenClient;
@@ -145,8 +146,8 @@ function handleAuthClick() {
         if (resp.error !== undefined) {
             throw (resp);
         }
-        document.getElementById('gdriveBtn').textContent = 'Sincronizando... 🔄';
-        await uploadOrCreateDriveFile();
+        document.getElementById('gdriveBtn').textContent = 'Conectando con Drive... 🔄';
+        await checkAndSyncDriveFile();
         document.getElementById('gdriveBtn').textContent = 'Google Drive API ☁️';
     };
 
@@ -157,57 +158,154 @@ function handleAuthClick() {
     }
 }
 
-async function uploadOrCreateDriveFile() {
+async function checkAndSyncDriveFile() {
+    try {
+        const fileName = 'sistema_evaluacion_V26_drive.json';
+        const accessToken = gapi.client.getToken().access_token;
+
+        // 1. Buscar si el archivo ya existe en Google Drive
+        const response = await gapi.client.drive.files.list({
+            q: `name='${fileName}' and trashed=false`,
+            fields: 'files(id, name, modifiedTime)',
+        });
+        
+        const files = response.result.files;
+
+        if (files && files.length > 0) {
+            const fileId = files[0].id;
+            // El archivo existe en la nube. Vamos a descargarlo para comparar o preguntar al usuario.
+            const fileRes = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+                headers: { 'Authorization': 'Bearer ' + accessToken }
+            });
+            
+            if (!fileRes.ok) throw new Error('No se pudo descargar el archivo existente de Google Drive');
+            const cloudDb = await fileRes.json();
+
+            // Mostrar modal inteligente de sincronización
+            showModal('Sincronización con Google Drive ☁️', `
+                <p><b>¡Hemos encontrado una copia de seguridad en tu Google Drive!</b></p>
+                <p>¿Qué acción deseas realizar?</p>
+                <div style="display: grid; gap: 10px; margin: 15px 0;">
+                    <button class="btn primary" onclick="downloadFromDrive('${fileId}')" style="width:100%; text-align:left; padding:12px;">
+                        <b>📥 Descargar desde Google Drive</b><br>
+                        <span style="font-weight:normal; font-size:11px; opacity:0.9;">Reemplaza los datos actuales del navegador con la copia más reciente de la nube.</span>
+                    </button>
+                    <button class="btn" onclick="uploadExistingDriveFile('${fileId}')" style="width:100%; text-align:left; padding:12px;">
+                        <b>📤 Subir y sobrescribir en Google Drive</b><br>
+                        <span style="font-weight:normal; font-size:11px; opacity:0.9;">Envía los cambios que tienes ahora mismo en este dispositivo hacia tu Google Drive.</span>
+                    </button>
+                </div>
+                <div class="modalActions"><button class="btn" onclick="closeModal()">Cancelar</button></div>
+            `);
+        } else {
+            // No existe en la nube, lo creamos directamente con los datos actuales
+            await uploadOrCreateDriveFile(null);
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Error al conectar con Google Drive: ' + (err.message || err));
+    }
+}
+
+async function downloadFromDrive(fileId) {
+    try {
+        closeModal();
+        document.getElementById('gdriveBtn').textContent = 'Descargando... 📥';
+        const accessToken = gapi.client.getToken().access_token;
+        const fileRes = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+            headers: { 'Authorization': 'Bearer ' + accessToken }
+        });
+        if (!fileRes.ok) throw new Error('Error al descargar el archivo de Drive');
+        const cloudDb = await fileRes.json();
+
+        if (!cloudDb.courses || !cloudDb.students) {
+            throw new Error('El archivo en la nube no tiene un formato válido.');
+        }
+
+        db = cloudDb;
+        migrate();
+        if (typeof db.classes !== 'undefined') db.classes.forEach(ensureRoomProfessionals);
+        db.evaluations.forEach(ev => ev.data = normalizeEvaluationData(ev.data));
+        if (!byId(db.courses, db.selected.courseId) && db.courses[0]) db.selected.courseId = db.courses[0].id;
+        
+        save();
+        render();
+
+        showModal('Restauración exitosa ☁️', `
+            <p><b>¡Datos descargados y aplicados correctamente desde Google Drive!</b></p>
+            <p>Se ha actualizado tu aplicación con la copia guardada en la nube.</p>
+            <div class="modalActions"><button class="btn primary" onclick="closeModal()">Aceptar</button></div>
+        `);
+    } catch (err) {
+        console.error(err);
+        alert('Error al descargar de Drive: ' + (err.message || err));
+    } finally {
+        document.getElementById('gdriveBtn').textContent = 'Google Drive API ☁️';
+    }
+}
+
+async function uploadExistingDriveFile(fileId) {
+    try {
+        closeModal();
+        document.getElementById('gdriveBtn').textContent = 'Subiendo... 📤';
+        save();
+        const fileName = 'sistema_evaluacion_V26_drive.json';
+        const fileContent = JSON.stringify(db, null, 2);
+        const accessToken = gapi.client.getToken().access_token;
+        const file = new Blob([fileContent], {type: 'application/json'});
+        
+        const metadata = { name: fileName, mimeType: 'application/json' };
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+        form.append('file', file);
+
+        const res = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`, {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Bearer ' + accessToken },
+            body: form
+        });
+        if (!res.ok) throw new Error('Error al actualizar en Drive');
+
+        showModal('Sincronización con Google Drive ☁️', `
+            <p><b>¡Tus datos locales se han subido y actualizado en Google Drive con éxito!</b></p>
+            <div class="modalActions"><button class="btn primary" onclick="closeModal()">Aceptar</button></div>
+        `);
+    } catch (err) {
+        console.error(err);
+        alert('Error al subir a Drive: ' + (err.message || err));
+    } finally {
+        document.getElementById('gdriveBtn').textContent = 'Google Drive API ☁️';
+    }
+}
+
+async function uploadOrCreateDriveFile(existingFileId) {
     try {
         save();
         const fileName = 'sistema_evaluacion_V26_drive.json';
         const fileContent = JSON.stringify(db, null, 2);
         const accessToken = gapi.client.getToken().access_token;
-
-        const response = await gapi.client.drive.files.list({
-            q: `name='${fileName}' and trashed=false`,
-            fields: 'files(id, name)',
-        });
-        
-        const files = response.result.files;
         const file = new Blob([fileContent], {type: 'application/json'});
-        
-        const metadata = {
-            name: fileName,
-            mimeType: 'application/json'
-        };
+        const metadata = { name: fileName, mimeType: 'application/json' };
 
         const form = new FormData();
         form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
         form.append('file', file);
 
-        if (files && files.length > 0) {
-            const fileId = files[0].id;
-            const res = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`, {
-                method: 'PATCH',
-                headers: { 'Authorization': 'Bearer ' + accessToken },
-                body: form
-            });
-            if (!res.ok) throw new Error('Error al actualizar en Drive');
-        } else {
-            const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + accessToken },
-                body: form
-            });
-            if (!res.ok) throw new Error('Error al crear en Drive');
-        }
+        const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + accessToken },
+            body: form
+        });
+        if (!res.ok) throw new Error('Error al crear en Drive');
 
         showModal('Sincronización con Google Drive ☁️', `
-            <p><b>¡Sincronización completada con éxito!</b></p>
-            <p>Tus datos se han guardado directamente en tu cuenta de Google Drive bajo el archivo <b>${fileName}</b>.</p>
+            <p><b>¡Copia creada por primera vez en tu Google Drive!</b></p>
+            <p>Se ha subido el archivo <b>${fileName}</b> a tu nube correctamente.</p>
             <div class="modalActions"><button class="btn primary" onclick="closeModal()">Aceptar</button></div>
         `);
     } catch (err) {
         console.error(err);
-        alert('Error al conectar con Google Drive: ' + (err.message || err));
-    } finally {
-        document.getElementById('gdriveBtn').textContent = 'Google Drive API ☁️';
+        alert('Error al crear en Drive: ' + (err.message || err));
     }
 }
 
