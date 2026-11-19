@@ -104,7 +104,7 @@ function saveToGoogleDrive(){
     `);
 }
 
-function exportDB(){save();download(db,'sistema_evaluacion_V26.json')}fileDB.onchange=e=>{const f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.courses||!x.students||!x.evaluations)throw Error();db=x;migrate();db.classes.forEach(ensureRoomProfessionals);db.evaluations.forEach(ev=>ev.data=normalizeEvaluationData(ev.data));if(!byId(db.courses,db.selected.courseId)&&db.courses[0])db.selected.courseId=db.courses[0].id;render()}catch{alert('Archivo JSON no válido')}};r.readAsText(f);e.target.value=''};
+function exportDB(){save();download(db,'sistema_evaluacion_V26.json')}const _fileDB=document.getElementById('fileDB');if(_fileDB)_fileDB.onchange=e=>{const f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.courses||!x.students||!x.evaluations)throw Error();db=x;migrate();db.classes.forEach(ensureRoomProfessionals);db.evaluations.forEach(ev=>ev.data=normalizeEvaluationData(ev.data));if(!byId(db.courses,db.selected.courseId)&&db.courses[0])db.selected.courseId=db.courses[0].id;render()}catch{alert('Archivo JSON no válido')}};r.readAsText(f);e.target.value=''};
 
 /* --- GOOGLE DRIVE: FUENTE DE VERDAD + CIFRADO --- */
 const CLIENT_ID='503984601918-tv238rrh2fksfrlfi8cjsj5edqjqeud3.apps.googleusercontent.com';
@@ -113,25 +113,6 @@ const DRIVE_FILE_NAME='evaluaciones_iniciales_data.enc';
 const LEGACY_DRIVE_FILE_NAME='sistema_evaluacion_V26_drive.json';
 const KDF_ITERATIONS=250000;
 let tokenClient,gapiInited=false,gisInited=false,driveFileId=null,driveReady=false,cryptoPassword='',driveSaveTimer=null,pendingLegacyDb=null;
-
-function gateStatus(t,error=false){const el=document.getElementById('driveGateStatus');if(el){el.textContent=t||'';el.classList.toggle('error',error)}if(t)console.log('[DriveGate]',error?'ERROR:':'INFO:',t)}
-function gateBody(html){const el=document.getElementById('driveGateBody');if(el)el.innerHTML=html}
-function showDriveGate(title,text,bodyHtml,statusText='',isError=false){
-  const gate=document.getElementById('driveGate');
-  if(!gate)return;
-  gate.classList.remove('hidden');
-  const tEl=document.getElementById('driveGateTitle');
-  const pEl=document.getElementById('driveGateText');
-  if(tEl&&title)tEl.textContent=title;
-  if(pEl&&text)pEl.textContent=text;
-  if(bodyHtml!==null)gateBody(bodyHtml);
-  gateStatus(statusText,isError);
-}
-function hideDriveGate(){
-  const gate=document.getElementById('driveGate');
-  if(gate)gate.classList.add('hidden');
-  gateStatus('');
-}
 
 async function initGisOnly(){
   if(gisInited&&tokenClient)return true;
@@ -185,6 +166,27 @@ if(document.readyState==='loading'){
   setTimeout(initializeGoogleLibraries,50);
 }
 async function waitGoogleReady(){if(gapiInited&&gisInited)return true;return initializeGoogleLibraries()}
+
+function gateStatus(t,error=false){const el=document.getElementById('driveGateStatus');if(el){el.textContent=t||'';el.classList.toggle('error',error)}if(t)console.log('[DriveGate]',error?'ERROR:':'INFO:',t)}
+function gateBody(html){const el=document.getElementById('driveGateBody');if(el)el.innerHTML=html}
+function showDriveGate(title,text,bodyHtml,statusText='',isError=false){
+  const gate=document.getElementById('driveGate');
+  if(!gate)return;
+  gate.classList.remove('hidden');
+  const tEl=document.getElementById('driveGateTitle');
+  const pEl=document.getElementById('driveGateText');
+  if(tEl&&title)tEl.textContent=title;
+  if(pEl&&text)pEl.textContent=text;
+  if(bodyHtml!==null)gateBody(bodyHtml);
+  gateStatus(statusText,isError);
+}
+function hideDriveGate(){
+  const gate=document.getElementById('driveGate');
+  if(gate)gate.classList.add('hidden');
+  gateStatus('');
+}
+
+
 
 // Web Crypto: PBKDF2 + AES-GCM
 function bytesToB64(bytes){
