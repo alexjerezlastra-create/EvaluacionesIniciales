@@ -1,3 +1,8 @@
-/* Alpha 0.9.11 - menú lateral final */
-.courseHomeNav,.courseNavRoot,.professionalsNavRoot,.simpleCourseRoot,.simpleProfessionalsRoot,.treeCourseRoot{display:none!important}
-.navCourse{position:relative;width:100%;margin:12px 0 7px;padding:9px 8px;border:0;border-radius:7px;background:transparent;color:#fff;text-align:left;font-size:13px;font-weight:800;cursor:pointer}.navCourse:hover,.navCourse.on{background:#263f68}.navCourse.on:before{content:"";position:absolute;left:-8px;top:0;bottom:0;width:4px;border-radius:2px;background:#ffc400}.navCourseChildren{margin-left:12px;padding-left:9px;border-left:1px solid rgba(255,255,255,.13)}.navProfessionals{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;width:100%;margin:2px 0 8px;padding:7px;border:0;border-radius:7px;background:transparent;color:#dce6f2;text-align:left;font-size:12px;font-weight:700;cursor:pointer}.navProfessionals:hover{background:rgba(255,255,255,.09);color:#fff}.navProfessionalsIcon{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;background:#2c8999;color:#fff;font-weight:800}.navCourseChildren>.treeCycle{margin-top:3px}
+/* Alpha 0.9.8 - árbol lateral definitivo */
+.courseHomeNav,.courseHomeIcon,.simpleCourseRoot,.simpleProfessionalsRoot,.treeCourseRoot{display:none!important}
+.navCourseRoot{position:relative;width:100%;margin:12px 0 6px;padding:9px 8px;border:0;border-radius:7px;background:transparent;color:#fff;text-align:left;font-size:13px;font-weight:800;cursor:pointer}
+.navCourseRoot:hover,.navCourseRoot.on{background:#263f68}.navCourseRoot.on:before{content:"";position:absolute;left:-8px;top:0;bottom:0;width:4px;border-radius:2px;background:#ffc400}
+.navCourseChildren{margin-left:12px;padding-left:9px;border-left:1px solid rgba(255,255,255,.13)}
+.navProfessionals{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;width:100%;margin:2px 0 8px;padding:7px;border:0;border-radius:7px;background:transparent;color:#dce6f2;text-align:left;font-size:12px;font-weight:700;cursor:pointer}
+.navProfessionals:hover{background:rgba(255,255,255,.09);color:#fff}.navProfessionalsIcon{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;background:#2c8999;color:#fff;font-weight:800}
+.navCourseChildren>.treeCycle{margin-top:3px}
