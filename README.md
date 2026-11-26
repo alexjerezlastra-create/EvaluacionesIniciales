@@ -1,15 +1,10 @@
-# Evaluaciones Iniciales Alpha 0.8 Modular
+# Alpha 0.8.1 Modular - módulo Evaluaciones
 
-Baseline: Alpha 0.7.
+Cambios:
+- Cabecera documental sin Alumno/Fecha duplicados e inclusión de Tutor/a.
+- Fortalezas e intereses a una columna.
+- Participación y contexto por filas Rutina + Facilitador/Barrera.
+- Ayudas emergentes en las tres áreas y Prioridades funcionales.
+- Prioridades sin límite máximo.
 
-## Ejecución
-Publicar la carpeta completa en GitHub Pages. No abrir `index.html` como `file://` para Google Drive.
-
-## Carga
-1. `core.js` - modelo, estado y utilidades.
-2. `ui.js` - navegación, cursos, aulas, alumnos y profesionales.
-3. `storage/drive.js` - cifrado y proveedores Drive / File System Access.
-4. `evaluations.js` - motor completo de evaluación.
-5. `app.js` - arranque.
-
-Los archivos fachada documentan la arquitectura objetivo. En esta primera modularización conservadora no se han aislado más símbolos para evitar regresiones por orden de carga.
+Publicar toda la estructura en GitHub Pages.

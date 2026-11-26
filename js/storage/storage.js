@@ -1,1 +1,1 @@
-// Contrato: abrir, crear, listar, guardar, renombrar y eliminar.
+// Contrato común de almacenamiento.

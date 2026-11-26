@@ -1,1 +1,1 @@
-// Aulas y profesionales: ui.js.
+// Aulas: ui.js.

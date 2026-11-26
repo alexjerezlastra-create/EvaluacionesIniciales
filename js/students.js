@@ -1,1 +1,1 @@
-// Alumnos, matrículas y promociones: ui.js.
+// Alumnos/matrículas: ui.js.

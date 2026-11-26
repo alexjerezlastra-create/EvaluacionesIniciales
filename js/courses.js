@@ -1,1 +1,1 @@
-// Cursos y ciclos: ui.js.
+// Cursos/ciclos: ui.js.

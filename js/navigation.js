@@ -1,1 +1,1 @@
-// Navegación y renderizado: ui.js.
+// Navegación: ui.js.
