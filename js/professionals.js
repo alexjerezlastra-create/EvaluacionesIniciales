@@ -1,3 +1,18 @@
+/* Alpha 0.9.1 - acceso directo a la vista general del curso */
+const originalRenderTreeWithProfessionals = renderTree;
+renderTree = function renderTreeCourseHome(){
+  originalRenderTreeWithProfessionals();
+  const nav=document.getElementById('tree');
+  if(!nav||!db.selected.courseId)return;
+  const currentIsCourse=!db.selected.cycleId&&!db.selected.classId&&!db.selected.studentId&&!db.selected.evaluationId;
+  const home=document.createElement('button');
+  home.type='button';
+  home.className='courseHomeNav'+(currentIsCourse?' on':'');
+  home.innerHTML='<span class="courseHomeIcon">⌂</span><span><b>Vista general del curso</b><small>Ciclos y profesionales</small></span>';
+  home.onclick=()=>selectCourse(db.selected.courseId);
+  nav.prepend(home);
+};
+
 /* Alpha 0.9 - Profesionales por curso y asignaciones a aulas */
 const PROFESSIONAL_SPECIALTIES=[
   'PT','AL','Fisioterapeuta','Orientación','Técnico/a Educativo/a','Enfermera',
