@@ -1,10 +1,22 @@
-# Alpha 0.8.1 Modular - módulo Evaluaciones
+# Actualización Alpha 0.8.2 - Evaluaciones
+
+Copiar:
+- `js/evaluations-0.8.2.js`
+- `css/evaluation-0.8.2.css`
+
+En `index.html`, después de `css/evaluation.css`:
+```html
+<link rel="stylesheet" href="css/evaluation-0.8.2.css">
+```
+
+Y después de `js/evaluations.js`, antes de `js/app.js`:
+```html
+<script src="js/evaluations-0.8.2.js"></script>
+```
 
 Cambios:
-- Cabecera documental sin Alumno/Fecha duplicados e inclusión de Tutor/a.
-- Fortalezas e intereses a una columna.
-- Participación y contexto por filas Rutina + Facilitador/Barrera.
-- Ayudas emergentes en las tres áreas y Prioridades funcionales.
-- Prioridades sin límite máximo.
-
-Publicar toda la estructura en GitHub Pages.
+- Combobox propio para Rutina y Facilitador/Barrera: siempre muestra todas las opciones y admite texto libre.
+- Tooltips hacia abajo.
+- Nuevos indicadores AP con cinco opciones por defecto:
+  Adulto de referencia, Otro adulto, Igual/compañero, Apoyo del entorno/material y Otro.
+- Los apoyos ya guardados no se modifican.
