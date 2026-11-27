@@ -1,0 +1,52 @@
+/* Alpha 0.9.16.1 - elimina completamente el amarillo del bloque AP */
+/* Vista normal */
+tr.apRow>td,
+.apRow>td,
+.area table .apRow td{
+  background:#F4F8FA!important;
+  background-color:#F4F8FA!important;
+  border-top-color:#D7E4E8!important;
+}
+.apRow .apPanel,
+.apPanel{
+  background:#F4F8FA!important;
+  background-color:#F4F8FA!important;
+  border:1px solid #D7E4E8!important;
+  border-left:4px solid #2C8999!important;
+  box-shadow:none!important;
+}
+.apRow .apOptions .chip,
+.apPanel .apOptions .chip{
+  background:#FFFFFF!important;
+  border-color:#C7DEE2!important;
+  color:#315B65!important;
+}
+.apRow .apOptions .chip:has(input:checked),
+.apPanel .apOptions .chip:has(input:checked){
+  background:#E7F2F4!important;
+  border-color:#9FCBD1!important;
+  color:#176775!important;
+}
+.apRow .apGrid textarea,.apRow .apGrid input,
+.apPanel .apGrid textarea,.apPanel .apGrid input{
+  background:#FFFFFF!important;
+  border-color:#CDDBE2!important;
+}
+/* Impresión: ni la celda contenedora ni el panel pueden heredar #fff4df */
+@media print{
+  tr.apRow>td,.apRow>td,.area table .apRow td{
+    background:#FFFFFF!important;
+    background-color:#FFFFFF!important;
+    border-top-color:#CFDEE2!important;
+  }
+  .apRow .apPanel,.apPanel{
+    background:#FAFCFD!important;
+    background-color:#FAFCFD!important;
+    border:1px solid #CFDEE2!important;
+    border-left:3px solid #2C8999!important;
+    box-shadow:none!important;
+  }
+  .apPanel>.head b{color:#173658!important}
+  .apOptions .chip:not(:has(input:checked)){display:none!important}
+  .apOptions .chip:has(input:checked){background:#F1F8F9!important;border-color:#BBD6DA!important;color:#315B65!important}
+}
