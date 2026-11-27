@@ -1,0 +1,33 @@
+/* Alpha 0.9.16 - paleta unificada de Evaluaciones */
+:root{
+ --eval-navy:#173658;--eval-teal:#2C8999;--eval-canvas:#F2F5F9;--eval-soft:#F7F9FC;
+ --eval-line:#D9E3ED;--eval-ink:#102747;--eval-muted:#657795;--eval-green:#3A9368;
+ --eval-amber:#C08A32;--eval-gray:#8795A6;--eval-danger:#C5575F;
+ --eval-area1:#3976B8;--eval-area2:#3A8C82;--eval-area3:#715F9E;
+}
+/* estructura */
+.evalHeader,.identityV22,.section.card{color:var(--eval-ink)}
+.evalHeader{border-color:var(--eval-line)!important;background:#fff!important}
+.evalHeaderMeta,.muted{color:var(--eval-muted)!important}
+.identityV22{border-color:var(--eval-line)!important;background:#fff!important}
+.identityV22:before{background:var(--eval-navy)!important;height:5px!important}
+.tabs{border-color:var(--eval-line)!important;background:#fff!important}.tabs button.on{background:var(--eval-navy)!important;color:#fff!important;border-color:var(--eval-navy)!important}
+.section.card{border-color:var(--eval-line)!important;background:#fff!important}.section.card h2,.section.card h3{color:var(--eval-navy)!important}
+.field label{color:#526884!important}.field input,.field textarea,.field select,.obs,.priority input{border-color:#D5DFEB!important;background:#FBFCFE!important;color:var(--eval-ink)!important}.field input:focus,.field textarea:focus,.field select:focus,.obs:focus,.priority input:focus{border-color:#8DA9C6!important;box-shadow:0 0 0 3px #366B9D14!important}
+/* areas: diferenciacion sutil, no bloques de color */
+.area{border-color:var(--eval-line)!important;background:#fff!important}.areaHead{background:#FAFBFD!important;border-left:4px solid var(--eval-area1)!important}.area:nth-of-type(2) .areaHead{border-left-color:var(--eval-area2)!important}.area:nth-of-type(3) .areaHead{border-left-color:var(--eval-area3)!important}.areaHead h2{color:var(--eval-navy)!important}.legend{color:var(--eval-muted)!important}
+/* estados C/AP/N-O */
+.score label,.score span{color:var(--eval-muted)}
+.score input[value="c"]:checked,.scoreC input:checked{accent-color:var(--eval-green)!important}.score input[value="ap"]:checked,.scoreAP input:checked{accent-color:var(--eval-amber)!important}.score input[value="no"]:checked,.scoreNO input:checked{accent-color:var(--eval-gray)!important}
+/* Apoyo AP: turquesa como informacion complementaria, no alerta */
+.apPanel{border:1px solid #D7E4E8!important;border-left:4px solid var(--eval-teal)!important;background:#F4F8FA!important;box-shadow:none!important}.apPanel>.head b,.apPanel h4{color:var(--eval-navy)!important}.apOptions .chip{border-color:#C7DEE2!important;background:#fff!important;color:#315B65!important}.apOptions .chip:has(input:checked){border-color:#9FCBD1!important;background:#E7F2F4!important;color:#176775!important}.apOptions input{accent-color:var(--eval-teal)!important}.apGrid textarea,.apGrid input{border-color:#CDDBE2!important;background:#fff!important}
+/* Participacion */
+.participationBlock{background:var(--eval-soft)!important;border-color:var(--eval-line)!important}.participationMultiRow{background:#fff!important;border-color:var(--eval-line)!important;box-shadow:0 3px 10px rgba(23,54,88,.035)!important}.participationChip{background:#E8F4F5!important;border-color:#BCDCE1!important;color:#176978!important}.participationChip button{background:#C7E2E6!important;color:#176270!important}.participationChip button:hover{background:#ACD4D9!important;color:#104E59!important}.evaluationComboMenu{border-color:#CEDAE6!important;background:#fff!important;box-shadow:0 14px 32px rgba(16,39,71,.16)!important}.evaluationComboOption:hover,.evaluationComboOption.selected{background:#E8F2F4!important;color:#1E7180!important}
+/* textos largos: color minimo */
+.strengthGrid .flexibleField,.summaryGrid .flexibleField,.flexibleField{background:#FBFCFE!important;border-color:#E0E7EF!important}.flexTitle{color:var(--eval-navy)!important}.nextBox{background:#FAFBFD!important;border-color:var(--eval-line)!important}.helpBubble{background:#E8F2F4!important;color:#23798A!important}.helpBubble:before{background:var(--eval-navy)!important}.helpBubble:after{border-bottom-color:var(--eval-navy)!important;border-top-color:transparent!important}
+/* prioridades */
+.priority{border-color:var(--eval-line)!important;background:#fff!important}.pnum{background:#E8F2F4!important;color:var(--eval-teal)!important}.prioritiesHead h3{color:var(--eval-navy)!important}
+/* botones: azul estructura, turquesa accion, rojo solo destructivo */
+.btn{border-color:#D6E0EB!important;color:#17324F!important;background:#fff!important}.btn.primary{background:var(--eval-teal)!important;border-color:var(--eval-teal)!important;color:#fff!important}.btn.danger{background:#fff!important;border-color:#E6C9CD!important;color:var(--eval-danger)!important}.btn.danger:hover{background:#FFF5F6!important;border-color:#D9AEB6!important}
+/* estados de evaluacion */
+.tag.ok{background:#E9F5EE!important;color:var(--eval-green)!important}.tag.work{background:#F7F0E3!important;color:#9A6E22!important}.tag.off{background:#EEF1F5!important;color:var(--eval-gray)!important}

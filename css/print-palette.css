@@ -1,0 +1,13 @@
+/* Alpha 0.9.16 - impresión sobria coherente con la nueva paleta */
+@page{size:A4 portrait;margin:11mm 9mm 12mm}
+@media print{
+ html,body{background:#fff!important;color:#102747!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ .side,.top,.noprint,.tabs,.modal,.participationAddValue,.evaluationComboMenu,.evaluationComboToggle,.participationChip button{display:none!important}
+ .app,.main{display:block!important}.content{max-width:none!important;padding:0!important}
+ .card,.evalHeader,.identityV22,.area,.block{background:#fff!important;box-shadow:none!important;border-color:#C8D2DC!important}
+ .identityV22:before{background:#173658!important;height:3px!important}.areaHead{background:#fff!important;border-left:3px solid #7895AE!important}.area:nth-of-type(2) .areaHead{border-left-color:#76A49E!important}.area:nth-of-type(3) .areaHead{border-left-color:#9085AC!important}
+ .participationMultiRow,.flexibleField,.nextBox,.priority{break-inside:avoid!important;page-break-inside:avoid!important;background:#fff!important}.participationChip{background:#F3F8F9!important;border:1px solid #BFD5D8!important;color:#315B65!important}
+ table{width:100%!important;table-layout:fixed!important;font-size:7.2pt!important}thead{display:table-header-group!important}th,td{padding:1.2mm!important;vertical-align:top!important;overflow-wrap:anywhere!important}th:nth-child(1),td:nth-child(1){width:38%!important}th:nth-child(2),td:nth-child(2),th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){width:7%!important;text-align:center!important}th:nth-child(5),td:nth-child(5){width:41%!important}.obs{min-height:14mm!important;overflow:visible!important;resize:none!important}
+ tr{break-inside:avoid!important;page-break-inside:avoid!important}tr:has(+ .apRow){break-after:avoid!important}.apRow{break-before:avoid!important}.apPanel{break-inside:avoid!important;background:#FAFCFD!important;border:1px solid #CFDEE2!important;border-left:3px solid #2C8999!important;box-shadow:none!important}.apPanel>.head b{color:#173658!important}.apOptions .chip:not(:has(input:checked)){display:none!important}.apOptions .chip:has(input:checked){background:#F1F8F9!important;border-color:#BBD6DA!important;color:#315B65!important}.apGrid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:1.8mm!important}.apGrid textarea{background:#fff!important;border-color:#D5DFE4!important;overflow:visible!important;resize:none!important}
+ .helpBubble{display:none!important}
+}
