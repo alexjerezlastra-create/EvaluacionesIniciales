@@ -1,1 +1,198 @@
-/* Las reglas de impresión de la baseline permanecen en app.css/evaluation.css para conservar la salida A4. */
+/* Alpha 0.9.16 - impresión de evaluaciones sobre baseline estable 0.9.15 */
+@page{size:A4 portrait;margin:11mm 9mm 12mm}
+
+@media print{
+  html,body{
+    background:#fff!important;
+    font-size:9pt!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  /* Controles de edición que nunca deben aparecer en el informe. */
+  .side,.top,.noprint,.tabs,.modal,.warning,
+  .participationAddValue,
+  .evaluationComboMenu,
+  .evaluationComboToggle,
+  .participationChip button,
+  .participationEmpty,
+  .participationNoValues{
+    display:none!important;
+  }
+
+  .app,.main{display:block!important}
+  .content{max-width:none!important;padding:0!important}
+  .card,.stat,.evalHeader,.identityV22,.area,.block{
+    background:#fff!important;
+    box-shadow:none!important;
+    backdrop-filter:none!important;
+    border-color:#bcc8d4!important;
+  }
+
+  /* Participación: una rutina y todos sus elementos forman una unidad. */
+  .participationBlock{
+    padding:3mm!important;
+    background:#fff!important;
+    break-inside:auto!important;
+    page-break-inside:auto!important;
+  }
+  .participationBlock>.head{
+    break-after:avoid!important;
+    page-break-after:avoid!important;
+  }
+  .participationMultiRows{display:block!important}
+  .participationMultiRow{
+    display:block!important;
+    margin:0 0 3mm!important;
+    padding:3mm!important;
+    border:1px solid #cbd6e1!important;
+    border-radius:3mm!important;
+    background:#fff!important;
+    box-shadow:none!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+  .participationRoutineHead{
+    display:grid!important;
+    grid-template-columns:24mm 1fr!important;
+    gap:2mm!important;
+    align-items:start!important;
+    break-inside:avoid!important;
+  }
+  .participationValues{
+    display:grid!important;
+    grid-template-columns:24mm 1fr!important;
+    gap:2mm!important;
+    margin-top:2mm!important;
+    padding-top:2mm!important;
+    border-top:1px solid #e1e7ed!important;
+    break-inside:avoid!important;
+  }
+  .participationRoutineHead>label,
+  .participationValues>label{
+    color:#526884!important;
+    font-size:7pt!important;
+    font-weight:700!important;
+    text-transform:uppercase!important;
+  }
+  .participationChips{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:1.5mm!important;
+  }
+  .participationChip{
+    display:inline-flex!important;
+    padding:1.3mm 2.4mm!important;
+    border:1px solid #b9d4d8!important;
+    border-radius:99px!important;
+    background:#e9f4f5!important;
+    color:#175f6b!important;
+    font-size:7.5pt!important;
+    font-weight:650!important;
+  }
+  .participationValues .evaluationCombo,
+  .participationValues .evaluationComboControl{
+    display:none!important;
+  }
+  .participationRoutineHead .evaluationComboControl{display:block!important}
+  .participationRoutineHead .evaluationComboControl input{
+    height:auto!important;
+    padding:1.5mm 2mm!important;
+    border:1px solid #c7d0d9!important;
+    border-radius:1.5mm!important;
+    background:#fff!important;
+  }
+
+  /* Tabla: el indicador y las observaciones reciben casi todo el ancho. */
+  .area{break-before:page!important;overflow:visible!important}
+  .block{overflow:visible!important}
+  .block>div[style*="overflow"]{overflow:visible!important}
+  table{width:100%!important;table-layout:fixed!important;font-size:7.2pt!important}
+  thead{display:table-header-group!important}
+  th,td{padding:1.2mm!important;overflow-wrap:anywhere!important;vertical-align:top!important}
+  th:nth-child(1),td:nth-child(1){width:38%!important}
+  th:nth-child(2),td:nth-child(2),
+  th:nth-child(3),td:nth-child(3),
+  th:nth-child(4),td:nth-child(4){width:7%!important;text-align:center!important}
+  th:nth-child(5),td:nth-child(5){width:41%!important}
+  .score{width:7%!important;text-align:center!important}
+  .score input{margin:0!important}
+  .obs{
+    width:100%!important;
+    min-height:14mm!important;
+    padding:1.5mm!important;
+    border:1px solid #c7d0d9!important;
+    border-radius:1.5mm!important;
+    resize:none!important;
+    overflow:visible!important;
+  }
+
+  /* Evita separar el indicador del apoyo AP en los navegadores Chromium. */
+  tr{break-inside:avoid!important;page-break-inside:avoid!important}
+  tr:has(+ .apRow){break-after:avoid!important;page-break-after:avoid!important}
+  .apRow{break-before:avoid!important;page-break-before:avoid!important}
+  tbody:has(.apRow){break-inside:auto!important}
+
+  /* AP compacto: solo opciones marcadas y datos útiles. */
+  .apRow td{
+    padding:0 1.2mm 2mm!important;
+    background:#fff!important;
+    border-top:0!important;
+  }
+  .apPanel{
+    margin:0!important;
+    padding:2.2mm 2.5mm!important;
+    border:1px solid #e2c98c!important;
+    border-left:3px solid #c58a16!important;
+    border-radius:0 0 2mm 2mm!important;
+    background:#fffaf0!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+  .apPanel>.head{margin:0 0 1.5mm!important}
+  .apPanel>.head b{font-size:7.5pt!important;color:#6f4a09!important}
+  .apOptions{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:1.3mm!important;
+    margin:0 0 2mm!important;
+  }
+  .apOptions .chip{
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:1.2mm!important;
+    padding:1.1mm 2mm!important;
+    border:1px solid #dcc58f!important;
+    border-radius:99px!important;
+    background:#fff!important;
+    font-size:7pt!important;
+  }
+  .apOptions .chip:not(:has(input:checked)){display:none!important}
+  .apOptions .chip input{width:3mm!important;height:3mm!important;margin:0!important}
+  .apGrid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:1.8mm!important;
+  }
+  .apGrid .field{
+    min-width:0!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+  .apGrid .field label{font-size:6.8pt!important;margin:0 0 .8mm!important}
+  .apGrid textarea{
+    min-height:10mm!important;
+    padding:1.3mm!important;
+    border:1px solid #d5c7a6!important;
+    border-radius:1.5mm!important;
+    background:#fff!important;
+    resize:none!important;
+    overflow:visible!important;
+  }
+
+  /* Los cierres de bloque no quedan separados de su contenido. */
+  .nextBox,.priority,.contextBox,.flexibleField{
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+}
